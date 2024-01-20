@@ -7,10 +7,10 @@
 4. System delivers the user account data
 
 > ## Exception - Invalid Url
-1. System returns the "unexpected error message"
+1. ✅ System returns the "unexpected error message"
 
 > ## Exception - Invalid Data
-1. System returns the "unexpected error message"
+1. ✅ System returns the "unexpected error message"
 
 > ## Exception - Invalid Response
 1. System returns the "unexpected error message"
