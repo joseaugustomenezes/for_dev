@@ -14,9 +14,9 @@ class RemoteAuthentication implements Authentication {
   Future<AccountEntity> auth(AuthenticationParams params) async {
     final body = RemoteAuthenticationParams.fromDomain(params).toJson();
     try {
-      final response =
-          await httpClient.request(url, method: 'post', body: body);
-      return RemoteAccountModel.fromJson(response).toEntity();
+      final accountModel = await httpClient.request<RemoteAccountModel>(url,
+          method: 'post', body: body);
+      return accountModel.toEntity();
     } on HttpError catch (e) {
       switch (e) {
         case HttpError.serverError:
