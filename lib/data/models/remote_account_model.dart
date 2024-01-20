@@ -1,3 +1,4 @@
+import 'package:for_dev/data/http/http.dart';
 import 'package:for_dev/domain/entities/account_entity.dart';
 
 class RemoteAccountModel {
@@ -5,8 +6,12 @@ class RemoteAccountModel {
 
   RemoteAccountModel(this.accessToken);
 
-  factory RemoteAccountModel.fromJson(Map<String, dynamic> json) =>
-      RemoteAccountModel(json['accessToken'] as String);
+  factory RemoteAccountModel.fromJson(Map<String, dynamic> json) {
+    if (json['accessToken'] is! String) {
+      throw HttpErrors.invalidData;
+    }
+    return RemoteAccountModel(json['accessToken'] as String);
+  }
 
   AccountEntity toEntity() => AccountEntity(accessToken);
 }

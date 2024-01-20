@@ -40,7 +40,7 @@ void main() {
   test('Should throw UnexpectedError if HttpClient returns 400', () async {
     when(httpClient.request(any,
             method: anyNamed('method'), body: anyNamed('body')))
-        .thenThrow(HttpError.badRequest);
+        .thenThrow(HttpErrors.badRequest);
 
     final future = sut.auth(params);
     expect(future, throwsA(DomainError.unexpected));
@@ -49,7 +49,7 @@ void main() {
   test('Should throw UnexpectedError if HttpClient returns 404', () async {
     when(httpClient.request(any,
             method: anyNamed('method'), body: anyNamed('body')))
-        .thenThrow(HttpError.notFound);
+        .thenThrow(HttpErrors.notFound);
 
     final future = sut.auth(params);
     expect(future, throwsA(DomainError.unexpected));
@@ -58,7 +58,7 @@ void main() {
   test('Should throw UnexpectedError if HttpClient returns 500', () async {
     when(httpClient.request(any,
             method: anyNamed('method'), body: anyNamed('body')))
-        .thenThrow(HttpError.serverError);
+        .thenThrow(HttpErrors.serverError);
 
     final future = sut.auth(params);
     expect(future, throwsA(DomainError.unexpected));
@@ -68,7 +68,7 @@ void main() {
       () async {
     when(httpClient.request(any,
             method: anyNamed('method'), body: anyNamed('body')))
-        .thenThrow(HttpError.unauthorized);
+        .thenThrow(HttpErrors.unauthorized);
 
     final future = sut.auth(params);
     expect(future, throwsA(DomainError.invalidCredentials));
@@ -83,5 +83,16 @@ void main() {
 
     final account = await sut.auth(params);
     expect(account.token, accessToken);
+  });
+
+  test(
+      'Should throw UnexpectedError if HttpClient returns 200 with invalid data',
+      () async {
+    when(httpClient.request(any,
+            method: anyNamed('method'), body: anyNamed('body')))
+        .thenAnswer((_) async => {'invalid_key': 'invalid_value'});
+
+    final future = sut.auth(params);
+    expect(future, throwsA(DomainError.unexpected));
   });
 }

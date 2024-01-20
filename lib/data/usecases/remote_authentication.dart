@@ -1,6 +1,6 @@
 import 'package:for_dev/data/http/http.dart';
-import 'package:for_dev/data/models/remote_account_model.dart';
-import 'package:for_dev/domain/entities/account_entity.dart';
+import 'package:for_dev/data/models/models.dart';
+import 'package:for_dev/domain/entities/entities.dart';
 import 'package:for_dev/domain/helpers/helpers.dart';
 import 'package:for_dev/domain/usecases/usecases.dart';
 
@@ -16,13 +16,14 @@ class RemoteAuthentication {
       final response =
           await httpClient.request(url, method: 'post', body: body);
       return RemoteAccountModel.fromJson(response).toEntity();
-    } on HttpError catch (e) {
+    } on HttpErrors catch (e) {
       switch (e) {
-        case HttpError.serverError:
-        case HttpError.badRequest:
-        case HttpError.notFound:
+        case HttpErrors.serverError:
+        case HttpErrors.badRequest:
+        case HttpErrors.notFound:
+        case HttpErrors.invalidData:
           throw DomainError.unexpected;
-        case HttpError.unauthorized:
+        case HttpErrors.unauthorized:
           throw DomainError.invalidCredentials;
       }
     }
