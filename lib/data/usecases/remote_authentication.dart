@@ -16,14 +16,14 @@ class RemoteAuthentication {
       final response =
           await httpClient.request(url, method: 'post', body: body);
       return RemoteAccountModel.fromJson(response).toEntity();
-    } on HttpErrors catch (e) {
+    } on HttpError catch (e) {
       switch (e) {
-        case HttpErrors.serverError:
-        case HttpErrors.badRequest:
-        case HttpErrors.notFound:
-        case HttpErrors.invalidData:
+        case HttpError.serverError:
+        case HttpError.badRequest:
+        case HttpError.notFound:
+        case HttpError.invalidData:
           throw DomainError.unexpected;
-        case HttpErrors.unauthorized:
+        case HttpError.unauthorized:
           throw DomainError.invalidCredentials;
       }
     }

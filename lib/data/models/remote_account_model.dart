@@ -8,7 +8,7 @@ class RemoteAccountModel {
 
   factory RemoteAccountModel.fromJson(Map<String, dynamic> json) {
     if (json['accessToken'] is! String) {
-      throw HttpErrors.invalidData;
+      throw HttpError.invalidData;
     }
     return RemoteAccountModel(json['accessToken'] as String);
   }
