@@ -37,9 +37,6 @@ void main() {
             method: anyNamed('method'), body: anyNamed('body')))
         .thenThrow(HttpError.badRequest);
 
-    final params = AuthenticationParams(
-        email: faker.internet.email(), secret: faker.internet.password());
-
     final future = sut.auth(params);
     expect(future, throwsA(DomainError.unexpected));
   });
@@ -48,9 +45,6 @@ void main() {
     when(httpClient.request(any,
             method: anyNamed('method'), body: anyNamed('body')))
         .thenThrow(HttpError.notFound);
-
-    final params = AuthenticationParams(
-        email: faker.internet.email(), secret: faker.internet.password());
 
     final future = sut.auth(params);
     expect(future, throwsA(DomainError.unexpected));
@@ -61,9 +55,6 @@ void main() {
             method: anyNamed('method'), body: anyNamed('body')))
         .thenThrow(HttpError.serverError);
 
-    final params = AuthenticationParams(
-        email: faker.internet.email(), secret: faker.internet.password());
-
     final future = sut.auth(params);
     expect(future, throwsA(DomainError.unexpected));
   });
@@ -73,9 +64,6 @@ void main() {
     when(httpClient.request(any,
             method: anyNamed('method'), body: anyNamed('body')))
         .thenThrow(HttpError.unauthorized);
-
-    final params = AuthenticationParams(
-        email: faker.internet.email(), secret: faker.internet.password());
 
     final future = sut.auth(params);
     expect(future, throwsA(DomainError.invalidCredentials));
