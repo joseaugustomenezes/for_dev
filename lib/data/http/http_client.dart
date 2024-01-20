@@ -1,3 +1,4 @@
 abstract class HttpClient {
-  Future<void> request(String url, {String method, Map<String, dynamic> body});
+  Future<Map<String, dynamic>> request(String url,
+      {String method, Map<String, dynamic> body});
 }

@@ -1,4 +1,6 @@
 import 'package:for_dev/data/http/http.dart';
+import 'package:for_dev/data/models/remote_account_model.dart';
+import 'package:for_dev/domain/entities/account_entity.dart';
 import 'package:for_dev/domain/helpers/helpers.dart';
 import 'package:for_dev/domain/usecases/usecases.dart';
 
@@ -8,10 +10,12 @@ class RemoteAuthentication {
 
   RemoteAuthentication({required this.httpClient, required this.url});
 
-  Future<void> auth(AuthenticationParams params) async {
+  Future<AccountEntity> auth(AuthenticationParams params) async {
     final body = RemoteAuthenticationParams.fromDomain(params).toJson();
     try {
-      httpClient.request(url, method: 'post', body: body);
+      final response =
+          await httpClient.request(url, method: 'post', body: body);
+      return RemoteAccountModel.fromJson(response).toEntity();
     } on HttpError catch (e) {
       switch (e) {
         case HttpError.serverError:
