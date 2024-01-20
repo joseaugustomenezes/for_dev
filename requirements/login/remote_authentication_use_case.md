@@ -16,7 +16,7 @@
 1. System returns the "unexpected error message"
 
 > ## Exception - Internal Server Error
-1. System returns the "unexpected error message"
+1. ✅ System returns the "unexpected error message"
 
 > ## Exception - Invalid Credentials
-1. System returns an error message informing that the credentials are incorrect
+1. ✅ System returns an error message informing that the credentials are incorrect
