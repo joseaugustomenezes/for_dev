@@ -14,14 +14,16 @@ class HttpAdapter {
 
   HttpAdapter(this.client);
 
-  Future<void> request(String url,
+  Future<Map<String, dynamic>> request(String url,
       {required String method, Map<String, dynamic>? body}) async {
     final headers = {
       'content-type': 'application/json',
       'accept': 'application/json'
     };
     final jsonBody = body != null ? jsonEncode(body) : null;
-    await client.post(Uri.parse(url), headers: headers, body: jsonBody);
+    final response =
+        await client.post(Uri.parse(url), headers: headers, body: jsonBody);
+    return jsonDecode(response.body) as Map<String, dynamic>;
   }
 }
 
@@ -38,6 +40,10 @@ void main() {
 
   group('post', () {
     test('Should call post with correct values', () async {
+      when(client.post(any,
+              headers: anyNamed('headers'), body: anyNamed('body')))
+          .thenAnswer((_) async => Response('{"any_key":"any_value"}', 200));
+
       await sut.request(url, method: 'post', body: {'any_key': 'any_value'});
 
       verify(client.post(Uri.parse(url),
@@ -48,10 +54,22 @@ void main() {
           body: '{"any_key":"any_value"}'));
     });
 
-    test('Should call post with correct values', () async {
+    test('Should call post with correct body', () async {
+      when(client.post(any, headers: anyNamed('headers')))
+          .thenAnswer((_) async => Response('{"any_key":"any_value"}', 200));
+
       await sut.request(url, method: 'post');
 
       verify(client.post(any, headers: anyNamed('headers')));
+    });
+
+    test('Should return data if post returns 200', () async {
+      when(client.post(any, headers: anyNamed('headers')))
+          .thenAnswer((_) async => Response('{"any_key":"any_value"}', 200));
+
+      final response = await sut.request(url, method: 'post');
+
+      expect(response, {'any_key': 'any_value'});
     });
   });
 }
