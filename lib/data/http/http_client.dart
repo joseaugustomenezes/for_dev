@@ -1,8 +1,8 @@
 abstract class HttpClient {
-  Future<T> request<T extends Serializable<T>>(String url,
+  Future<T> request<T extends Deserializable<T>>(String url,
       {String method, Map<String, dynamic> body});
 }
 
-abstract class Serializable<T> {
-  T fromJson(Map<String, dynamic> json);
+abstract class Deserializable<T> {
+  T fromMap(Map<String, dynamic> data);
 }

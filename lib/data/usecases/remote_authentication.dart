@@ -11,7 +11,7 @@ class RemoteAuthentication implements Authentication {
   RemoteAuthentication({required this.httpClient, required this.url});
 
   @override
-  Future<AccountEntity> auth(AuthenticationParams params) async {
+  Future<AccountEntity> auth(final AuthenticationParams params) async {
     final body = RemoteAuthenticationParams.fromDomain(params).toJson();
     try {
       final accountModel = await httpClient.request<RemoteAccountModel>(url,
@@ -37,7 +37,8 @@ class RemoteAuthenticationParams {
 
   RemoteAuthenticationParams({required this.email, required this.password});
 
-  factory RemoteAuthenticationParams.fromDomain(AuthenticationParams params) =>
+  factory RemoteAuthenticationParams.fromDomain(
+          final AuthenticationParams params) =>
       RemoteAuthenticationParams(email: params.email, password: params.secret);
 
   Map<String, dynamic> toJson() => {'email': email, 'password': password};

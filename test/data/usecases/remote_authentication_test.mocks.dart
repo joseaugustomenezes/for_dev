@@ -37,7 +37,7 @@ class _FakeFuture_0<T1> extends _i1.SmartFake implements _i2.Future<T1> {
 /// See the documentation for Mockito's code generation for more information.
 class MockHttpClient extends _i1.Mock implements _i3.HttpClient {
   @override
-  _i2.Future<T> request<T extends _i3.Serializable<T>>(
+  _i2.Future<T> request<T extends _i3.Deserializable<T>>(
     String? url, {
     String? method,
     Map<String, dynamic>? body,
