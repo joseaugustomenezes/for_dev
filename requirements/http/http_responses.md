@@ -2,8 +2,8 @@
 
 > ## Success
 1. ✅ Request with valid http verb (post)
-2. content type set as JSON on headers
-3. request with correct body
+2. ✅ content type set as JSON on headers
+3. ✅ request with correct body
 4. Ok - 200 and response with data
 5. No content - 204 and response without data
 
