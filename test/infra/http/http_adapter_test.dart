@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:for_dev/data/http/http.dart';
 import 'package:http/http.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -9,11 +10,12 @@ import 'package:mockito/mockito.dart';
 @GenerateNiceMocks([MockSpec<Client>()])
 import 'http_adapter_test.mocks.dart';
 
-class HttpAdapter {
+class HttpAdapter implements HttpClient {
   final Client client;
 
   HttpAdapter(this.client);
 
+  @override
   Future<Map<String, dynamic>> request(String url,
       {required String method, Map<String, dynamic>? body}) async {
     final headers = {
@@ -21,9 +23,19 @@ class HttpAdapter {
       'accept': 'application/json'
     };
     final jsonBody = body != null ? jsonEncode(body) : null;
-    final response =
-        await client.post(Uri.parse(url), headers: headers, body: jsonBody);
-    return jsonDecode(response.body) as Map<String, dynamic>;
+    try {
+      final response =
+          await client.post(Uri.parse(url), headers: headers, body: jsonBody);
+      if (response.body.isNotEmpty) {
+        final jsonResponse = jsonDecode(response.body);
+        if (jsonResponse is Map<String, dynamic>) {
+          return jsonResponse;
+        }
+      }
+      return {};
+    } catch (e) {
+      throw HttpError.serverError;
+    }
   }
 }
 
@@ -70,6 +82,15 @@ void main() {
       final response = await sut.request(url, method: 'post');
 
       expect(response, {'any_key': 'any_value'});
+    });
+
+    test('Should return empty map if post returns 200 with no data', () async {
+      when(client.post(any, headers: anyNamed('headers')))
+          .thenAnswer((_) async => Response('', 200));
+
+      final response = await sut.request(url, method: 'post');
+
+      expect(response, <String, dynamic>{});
     });
   });
 }

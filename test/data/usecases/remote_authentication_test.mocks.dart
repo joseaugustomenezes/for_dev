@@ -3,11 +3,10 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i2;
+import 'dart:async' as _i3;
 
-import 'package:for_dev/data/http/http_client.dart' as _i3;
+import 'package:for_dev/data/http/http_client.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i4;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -22,24 +21,14 @@ import 'package:mockito/src/dummies.dart' as _i4;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeFuture_0<T1> extends _i1.SmartFake implements _i2.Future<T1> {
-  _FakeFuture_0(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
 /// A class which mocks [HttpClient].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockHttpClient extends _i1.Mock implements _i3.HttpClient {
+class MockHttpClient extends _i1.Mock implements _i2.HttpClient {
   @override
-  _i2.Future<T> request<T extends _i3.Deserializable<T>>(
+  _i3.Future<Map<String, dynamic>> request(
     String? url, {
-    String? method,
+    required String? method,
     Map<String, dynamic>? body,
   }) =>
       (super.noSuchMethod(
@@ -51,55 +40,9 @@ class MockHttpClient extends _i1.Mock implements _i3.HttpClient {
             #body: body,
           },
         ),
-        returnValue: _i4.ifNotNull(
-              _i4.dummyValueOrNull<T>(
-                this,
-                Invocation.method(
-                  #request,
-                  [url],
-                  {
-                    #method: method,
-                    #body: body,
-                  },
-                ),
-              ),
-              (T v) => _i2.Future<T>.value(v),
-            ) ??
-            _FakeFuture_0<T>(
-              this,
-              Invocation.method(
-                #request,
-                [url],
-                {
-                  #method: method,
-                  #body: body,
-                },
-              ),
-            ),
-        returnValueForMissingStub: _i4.ifNotNull(
-              _i4.dummyValueOrNull<T>(
-                this,
-                Invocation.method(
-                  #request,
-                  [url],
-                  {
-                    #method: method,
-                    #body: body,
-                  },
-                ),
-              ),
-              (T v) => _i2.Future<T>.value(v),
-            ) ??
-            _FakeFuture_0<T>(
-              this,
-              Invocation.method(
-                #request,
-                [url],
-                {
-                  #method: method,
-                  #body: body,
-                },
-              ),
-            ),
-      ) as _i2.Future<T>);
+        returnValue:
+            _i3.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
+        returnValueForMissingStub:
+            _i3.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
+      ) as _i3.Future<Map<String, dynamic>>);
 }
