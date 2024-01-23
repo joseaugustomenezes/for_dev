@@ -23,12 +23,18 @@ class HttpAdapter {
 }
 
 void main() {
+  late MockClient client;
+  late HttpAdapter sut;
+  late String url;
+
+  setUp(() {
+    client = MockClient();
+    sut = HttpAdapter(client);
+    url = faker.internet.httpsUrl();
+  });
+
   group('post', () {
     test('Should call post with correct values', () async {
-      final client = MockClient();
-      final sut = HttpAdapter(client);
-      final url = faker.internet.httpsUrl();
-
       await sut.request(url, method: 'post');
 
       verify(client.post(Uri.parse(url), headers: {
