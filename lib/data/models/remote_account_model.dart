@@ -1,15 +1,14 @@
 import 'package:for_dev/data/http/http.dart';
 import 'package:for_dev/domain/entities/account_entity.dart';
 
-class RemoteAccountModel implements Deserializable<RemoteAccountModel> {
+class RemoteAccountModel {
   final String accessToken;
 
   RemoteAccountModel(this.accessToken);
 
   AccountEntity toEntity() => AccountEntity(accessToken);
 
-  @override
-  RemoteAccountModel fromMap(Map<String, dynamic> json) {
+  factory RemoteAccountModel.fromMap(Map<String, dynamic> json) {
     if (json['accessToken'] is! String) {
       throw HttpError.invalidData;
     }
