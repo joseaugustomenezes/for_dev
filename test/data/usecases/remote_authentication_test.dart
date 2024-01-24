@@ -46,12 +46,19 @@ void main() {
     await sut.auth(params);
 
     verify(httpClient.request(url,
-        method: 'post',
+        method: Methods.post,
         body: {'email': params.email, 'password': params.secret}));
   });
 
   test('Should throw UnexpectedError if HttpClient returns 400', () async {
     mockHttpError(HttpError.badRequest);
+
+    final future = sut.auth(params);
+    expect(future, throwsA(DomainError.unexpected));
+  });
+
+  test('Should throw UnexpectedError if HttpClient returns 403', () async {
+    mockHttpError(HttpError.forbidden);
 
     final future = sut.auth(params);
     expect(future, throwsA(DomainError.unexpected));

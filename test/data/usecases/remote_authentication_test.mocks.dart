@@ -28,7 +28,7 @@ class MockHttpClient extends _i1.Mock implements _i2.HttpClient {
   @override
   _i3.Future<Map<String, dynamic>> request(
     String? url, {
-    required String? method,
+    required _i2.Methods? method,
     Map<String, dynamic>? body,
   }) =>
       (super.noSuchMethod(

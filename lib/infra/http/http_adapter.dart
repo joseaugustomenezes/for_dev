@@ -10,26 +10,26 @@ class HttpAdapter implements HttpClient {
 
   @override
   Future<Map<String, dynamic>> request(String url,
-      {required String method, Map<String, dynamic>? body}) async {
+      {required Methods method, Map<String, dynamic>? body}) async {
     final headers = {
       'content-type': 'application/json',
       'accept': 'application/json'
     };
     final jsonBody = body != null ? jsonEncode(body) : null;
-    late Uri uri;
+    Response response = Response('', 500);
     try {
-      uri = Uri.parse(url);
+      if (method == Methods.post) {
+        response =
+            await client.post(Uri.parse(url), headers: headers, body: jsonBody);
+      }
     } catch (_) {
       throw HttpError.serverError;
     }
-    final response = await client.post(uri, headers: headers, body: jsonBody);
     return _handleResponse(response);
   }
 
   Map<String, dynamic> _handleResponse(Response response) {
     switch (response.statusCode) {
-      case 400:
-        throw HttpError.badRequest;
       case 200:
         if (response.body.isNotEmpty) {
           final jsonResponse = jsonDecode(response.body);
@@ -39,8 +39,17 @@ class HttpAdapter implements HttpClient {
         }
         return {};
       case 204:
-      default:
         return {};
+      case 400:
+        throw HttpError.badRequest;
+      case 401:
+        throw HttpError.unauthorized;
+      case 403:
+        throw HttpError.forbidden;
+      case 404:
+        throw HttpError.notFound;
+      default:
+        throw HttpError.serverError;
     }
   }
 }
