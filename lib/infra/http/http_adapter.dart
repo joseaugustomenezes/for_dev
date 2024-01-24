@@ -16,22 +16,31 @@ class HttpAdapter implements HttpClient {
       'accept': 'application/json'
     };
     final jsonBody = body != null ? jsonEncode(body) : null;
+    late Uri uri;
     try {
-      final response =
-          await client.post(Uri.parse(url), headers: headers, body: jsonBody);
-      return _handleResponse(response);
-    } catch (e) {
+      uri = Uri.parse(url);
+    } catch (_) {
       throw HttpError.serverError;
     }
+    final response = await client.post(uri, headers: headers, body: jsonBody);
+    return _handleResponse(response);
   }
 
   Map<String, dynamic> _handleResponse(Response response) {
-    if (response.body.isNotEmpty && response.statusCode != 204) {
-      final jsonResponse = jsonDecode(response.body);
-      if (jsonResponse is Map<String, dynamic>) {
-        return jsonResponse;
-      }
+    switch (response.statusCode) {
+      case 400:
+        throw HttpError.badRequest;
+      case 200:
+        if (response.body.isNotEmpty) {
+          final jsonResponse = jsonDecode(response.body);
+          if (jsonResponse is Map<String, dynamic>) {
+            return jsonResponse;
+          }
+        }
+        return {};
+      case 204:
+      default:
+        return {};
     }
-    return {};
   }
 }
