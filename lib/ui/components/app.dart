@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:for_dev/ui/pages/pages.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -69,7 +68,8 @@ class App extends StatelessWidget {
               overlayColor: const MaterialStatePropertyAll(Colors.transparent)),
         ),
       ),
-      home: const LoginPage(),
+      home: Container(),
+      //home: const LoginPage(),
     );
   }
 }

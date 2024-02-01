@@ -2,9 +2,9 @@
 
 > ## Rules
 1. ✅ The fields must start without showing any error message
-2. The login button must start disabled
+2. ✅ The login button must start disabled
 3. After typing something in a field, the error message must disappear only if the field is valid
-4. Validate email when the user type in the field
+4. ✅ Validate email when the user type in the field
 5. Show error message if the email is invalid
 6. Remove error message if the email is valid
 7. Validate password when the user type in the field
