@@ -23,7 +23,7 @@ class LoginPage extends StatelessWidget {
               child: Form(
                 child: Column(
                   children: [
-                    StreamBuilder<String>(
+                    StreamBuilder<String?>(
                         stream: presenter.emailErrorStream,
                         builder: (context, snapshot) {
                           return TextFormField(

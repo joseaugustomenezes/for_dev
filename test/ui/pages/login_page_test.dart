@@ -13,11 +13,11 @@ import 'login_page_test.mocks.dart';
 
 void main() {
   late LoginPresenter presenter;
-  late StreamController<String> emailErrorController;
+  late StreamController<String?> emailErrorController;
 
   Future<void> loadPage(WidgetTester tester) async {
     presenter = MockLoginPresenter();
-    emailErrorController = StreamController<String>();
+    emailErrorController = StreamController<String?>();
     when(presenter.emailErrorStream)
         .thenAnswer((_) => emailErrorController.stream);
     final loginPage = MaterialApp(home: LoginPage(presenter: presenter));
@@ -77,5 +77,18 @@ void main() {
     await tester.pump();
 
     expect(find.text('any error'), findsOneWidget);
+  });
+
+  testWidgets('Should present no error if email is valid', (tester) async {
+    await loadPage(tester);
+
+    emailErrorController.add(null);
+    await tester.pump();
+
+    final emailTextField = tester.widget<TextField>(find.byWidgetPredicate(
+        (widget) =>
+            widget is TextField && widget.decoration!.labelText == 'Email'));
+
+    expect(emailTextField.decoration!.errorText, isNull);
   });
 }
