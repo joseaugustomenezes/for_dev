@@ -30,10 +30,6 @@ class LoginPage extends StatelessWidget {
                             decoration: InputDecoration(
                               labelText: 'Email',
                               icon: const Icon(Icons.email),
-                              focusColor: Colors.yellow,
-                              hintStyle: const TextStyle(
-                                color: Colors.yellow,
-                              ),
                               errorText: snapshot.data,
                             ),
                             onChanged: presenter.validateEmail,
@@ -42,14 +38,19 @@ class LoginPage extends StatelessWidget {
                         }),
                     Padding(
                       padding: const EdgeInsets.only(top: 8, bottom: 32),
-                      child: TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Password',
-                          icon: Icon(Icons.lock),
-                        ),
-                        onChanged: presenter.validatePassword,
-                        obscureText: true,
-                      ),
+                      child: StreamBuilder<String?>(
+                          stream: presenter.passwordErrorStream,
+                          builder: (context, snapshot) {
+                            return TextFormField(
+                              decoration: InputDecoration(
+                                labelText: 'Password',
+                                icon: const Icon(Icons.lock),
+                                errorText: snapshot.data,
+                              ),
+                              onChanged: presenter.validatePassword,
+                              obscureText: true,
+                            );
+                          }),
                     ),
                     const ElevatedButton(
                       onPressed: null,

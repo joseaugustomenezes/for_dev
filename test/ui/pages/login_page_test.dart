@@ -14,12 +14,16 @@ import 'login_page_test.mocks.dart';
 void main() {
   late LoginPresenter presenter;
   late StreamController<String?> emailErrorController;
+  late StreamController<String?> passwordErrorController;
 
   Future<void> loadPage(WidgetTester tester) async {
     presenter = MockLoginPresenter();
     emailErrorController = StreamController<String?>();
+    passwordErrorController = StreamController<String?>();
     when(presenter.emailErrorStream)
         .thenAnswer((_) => emailErrorController.stream);
+    when(presenter.passwordErrorStream)
+        .thenAnswer((_) => passwordErrorController.stream);
     final loginPage = MaterialApp(home: LoginPage(presenter: presenter));
     await tester.pumpWidget(loginPage);
   }
@@ -90,5 +94,27 @@ void main() {
             widget is TextField && widget.decoration!.labelText == 'Email'));
 
     expect(emailTextField.decoration!.errorText, isNull);
+  });
+
+  testWidgets('Should present error if password is invalid', (tester) async {
+    await loadPage(tester);
+
+    passwordErrorController.add('any error');
+    await tester.pump();
+
+    expect(find.text('any error'), findsOneWidget);
+  });
+
+  testWidgets('Should present no error if password is valid', (tester) async {
+    await loadPage(tester);
+
+    passwordErrorController.add(null);
+    await tester.pump();
+
+    final passwordTextField = tester.widget<TextField>(find.byWidgetPredicate(
+        (widget) =>
+            widget is TextField && widget.decoration!.labelText == 'Password'));
+
+    expect(passwordTextField.decoration!.errorText, isNull);
   });
 }
