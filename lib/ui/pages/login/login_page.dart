@@ -52,15 +52,21 @@ class LoginPage extends StatelessWidget {
                             );
                           }),
                     ),
-                    const ElevatedButton(
-                      onPressed: null,
-                      child: Text('Login'),
+                    StreamBuilder<bool>(
+                      stream: presenter.isFormValidStream,
+                      builder: (context, snapshot) {
+                        final isFormValid = snapshot.data ?? false;
+                        return ElevatedButton(
+                          onPressed: isFormValid ? () {} : null,
+                          child: const Text('Login'),
+                        );
+                      },
                     ),
                     TextButton.icon(
                       onPressed: () {},
                       icon: const Icon(Icons.person),
                       label: const Text('Register'),
-                    ),
+                    )
                   ],
                 ),
               ),
